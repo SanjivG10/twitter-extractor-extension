@@ -1,11 +1,27 @@
+let interval  = null;
+let scrollTimes = 0;
+const TOTAL_SCROLL = 5;
+
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
+    function(request) {
       if (request.message === "start") {
-        const posts = getTwitterPostContent();
+        interval = setInterval(()=>{
+            const posts = getTwitterPostContent();
+            console.log(posts);
+            scrollTimes+=1;
+            window.scrollTo(0, document.body.scrollHeight);
+            if (scrollTimes>=TOTAL_SCROLL){
+                clearInterval(interval)
+            }
+            // send these posts back to backend to process
+        },5000)
+      }
+      else if (request.message==="stop"){
+        if (interval)
+        clearInterval(interval)
       }
     }
   );
-
 
 const getTwitterPostContent = ()=>{
     const articles = document.querySelectorAll("article");

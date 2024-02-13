@@ -29,21 +29,32 @@ function openTab(tabName) {
     document.getElementById(tabName + '-tab').className += " active";
 }
 
-document.getElementById('start-scraping').addEventListener('click', function() {
-    const scrapingContent =  document.getElementById('scraping-status').innerText;
-    if (scrapingContent==="Start"){
+document.addEventListener('DOMContentLoaded', function() {
+    chrome.storage.session.get(['scrapingState'], function(result) {
+        if(result.scrapingState === 'Start') {
+            document.getElementById('start-scraping-btn').innerText = 'Stop';
+        } else {
+            document.getElementById('start-scraping-btn').innerText = 'Start';
+        }
+    });
+});
+
+document.getElementById('start-scraping-btn').addEventListener('click', function() {
+    const scrapingContent = this.innerText;
+    if (scrapingContent === "Start") {
+
+        this.innerText = 'Stop';
+        chrome.storage.session.set({scrapingState: 'Start'});
         chrome.runtime.sendMessage({
             action: "start",
-            url: "https://twitter.com/@ronaldo"
+            url: "https://twitter.com/ronaldo" 
         });
-        document.getElementById('scraping-status').innerText = 'Scraping';
-    }
-    else {
+    } else {
+        this.innerText = 'Start';
+        chrome.storage.session.set({scrapingState: 'Stop'});
         chrome.runtime.sendMessage({
             action: "stop",
-            url: "https://twitter.com/@ronaldo"
+            url: "https://twitter.com/ronaldo" 
         });
-        document.getElementById('scraping-status').innerText = 'Stop';
     }
-
 });
