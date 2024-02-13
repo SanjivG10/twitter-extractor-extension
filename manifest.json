@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Webpyder",
+    "description": "Web Spyder - Built to find me job",
+    "version": "1.0",
+    "action": {
+      "default_popup": "popup/index.html",
+      "default_icon": "webpyder.svg"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+        "matches": ["https://*.twitter.com/*"],
+          "js": ["content/script.js"]
+        }
+      ],
+    "permissions": [
+        "tabs"
+    ]
+  }

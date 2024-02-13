@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webpyder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h2>Webpyder</h2>
+    </div>
+    <div class="nav-tabs">
+        <button class="tab-button" id="twitter-tab">Twitter</button>
+        <button class="tab-button" id="webpages-tab">Web Pages</button>
+    </div>
+    <div id="twitter" class="tab-content" style="display:none;">
+        <h3>Twitter Feeds</h3>
+        <button id="start-scraping">Start Scraping</button>
+        <div id="scraping-status">Status: Idle</div>
+    </div>
+    <div id="webpages" class="tab-content" style="display:none;">
+        <h3>Web Page Jobs</h3>
+        <div class="list-item">Website 1: Frontend Developer position</div>
+        <div class="list-item">Website 2: SEO Specialist role</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+/* Styles for Upwork tab content */
+.tab-content {
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.requirement-input {
+    margin-bottom: 20px;
+}
+
+.requirement-input input[type="textarea"] {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+.job-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.job-title a {
+    text-decoration: none;
+    color: #007bff;
+    margin-right: 10px;
+}
+
+.job-validity span {
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+/* Additional styles for hover effects */
+.job-title a:hover, .valid-job:hover, .invalid-job:hover {
+    text-decoration: underline;
+}
