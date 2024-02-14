@@ -20,7 +20,7 @@ def extract_json_like_string(text):
     pattern = r'\{.*?\}'
     match = re.search(pattern, text,re.DOTALL)
     if match:
-        return match.group(0)
+        return str(match.group(0))
     else:
         return "" 
     

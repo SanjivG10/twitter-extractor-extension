@@ -3,8 +3,8 @@ load_dotenv()
 
 from flask import Flask,request
 from flask_cors import CORS
+from process import process_json_files
 
-from mistral import get_chat_response
 from utils import save_json
 
 port = 6000
@@ -29,6 +29,7 @@ def save_tweet_to_json():
         return "done"
 
 if __name__=="__main__":
+    process_json_files()
     app.run(debug=True,port=port)
 
 
