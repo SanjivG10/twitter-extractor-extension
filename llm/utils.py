@@ -4,6 +4,10 @@ import json
 import os
 from constant import folder_name
 
+from pathlib import Path
+
+Path(folder_name).mkdir(parents=True, exist_ok=True)
+
 
 def save_json(data:str)->None:
     json_object = json.dumps(data, indent=4)
