@@ -41,6 +41,7 @@ const getTwitterPostContent = ()=>{
             "post": "",
             "user":"",
             "time":"",
+            isProcessed: false
         }
 
         const timeContainer = article.querySelector("time");

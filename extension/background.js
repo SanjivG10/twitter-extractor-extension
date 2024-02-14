@@ -3,7 +3,8 @@ let createdTabId = "";
 const manifestObj = chrome.runtime.getManifest();
 
 //  try to place your url to first item of host permission
-const LOCAL_URL = manifestObj["host_permissions"]?.[0].replace("\/\*","");
+let LOCAL_URL = manifestObj["host_permissions"]?.[0].replace("\/\*","");
+
 
 chrome.runtime.onMessage.addListener(function(request) {
     if (request.action === "start") {
