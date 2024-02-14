@@ -47,14 +47,14 @@ document.getElementById('start-scraping-btn').addEventListener('click', function
         chrome.storage.session.set({scrapingState: 'Start'});
         chrome.runtime.sendMessage({
             action: "start",
-            url: "https://twitter.com/ronaldo" 
+            url: "https://twitter.com/search?q=jobs%20hiring&src=typed_query" 
         });
     } else {
         this.innerText = 'Start';
         chrome.storage.session.set({scrapingState: 'Stop'});
         chrome.runtime.sendMessage({
             action: "stop",
-            url: "https://twitter.com/ronaldo" 
+            url: "" 
         });
     }
 });

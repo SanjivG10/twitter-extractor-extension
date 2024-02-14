@@ -1,5 +1,10 @@
 let createdTabId = "";
 
+const manifestObj = chrome.runtime.getManifest();
+
+//  try to place your url to first item of host permission
+const LOCAL_URL = manifestObj["host_permissions"]?.[0].replace("\/\*","");
+
 chrome.runtime.onMessage.addListener(function(request) {
     if (request.action === "start") {
         chrome.tabs.create({ url: request.url, active: false,}, function(tab) {
@@ -14,6 +19,17 @@ chrome.runtime.onMessage.addListener(function(request) {
     }
     else if (request.action === "stop" && createdTabId !== null) {
         chrome.tabs.sendMessage(createdTabId, {"message": "stop"});
+    }
+
+    else if (request.action==="data"){
+        console.log("Got saving",request.data);
+        fetch(`${LOCAL_URL}/save-tweet`,{
+            method: "POST",
+            body: JSON.stringify(request.data),
+            headers: {
+                "Content-Type":"application/json"
+            }
+        })
     }
 });
 
