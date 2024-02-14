@@ -1,32 +1,35 @@
-from openai import OpenAI
-from pydantic import BaseModel, Field
-from typing import List
+from dotenv import load_dotenv
+load_dotenv()
 
-import instructor
+from flask import Flask,request
+from flask_cors import CORS
+
+from mistral import get_chat_response
+from utils import save_json
+
+port = 6000
+
+app =Flask(__name__)
+CORS(app)
+
+@app.route("/")
+def home():
+    return "hello world"
+
+@app.route("/save-tweet", methods=['GET', 'POST'])
+def save_tweet_to_json():
+    try:
+        if request.method=="POST":
+            data = request.get_json()
+            save_json(data)
+            return "saved"
+        return "not a good endpoint, but I will allow it"
+    except Exception as e:
+        print(e)
+        return "done"
+
+if __name__=="__main__":
+    app.run(debug=True,port=port)
 
 
-class JobPostHandler(BaseModel):
-    title: str
-    is_job: bool 
 
-
-# enables `response_model` in create call
-client = instructor.patch(
-    OpenAI(
-        base_url="http://localhost:11434/v1",
-        api_key="ollama",  # required, but unused
-    ),
-    mode=instructor.Mode.JSON,
-)
-
-resp = client.chat.completions.create(
-    model="llama2",
-    messages=[
-        {
-            "role": "user",
-            "content": "We are not hiring lol. This is just a random fake post",
-        }
-    ],
-    response_model=JobPostHandler,
-)
-print(resp.model_dump_json(indent=2))
