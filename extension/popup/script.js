@@ -30,31 +30,29 @@ function openTab(tabName) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    chrome.storage.session.get(['scrapingState'], function(result) {
-        if(result.scrapingState === 'Start') {
-            document.getElementById('start-scraping-btn').innerText = 'Stop';
+    chrome.storage.session.get(['twitterScrapingState'], function(result) {
+        if(result.twitterScrapingState === 'Start') {
+            document.getElementById('start-twitter-scrape-btn').innerText = 'Stop';
         } else {
-            document.getElementById('start-scraping-btn').innerText = 'Start';
+            document.getElementById('start-twitter-scrape-btn').innerText = 'Start';
         }
     });
 });
 
-document.getElementById('start-scraping-btn').addEventListener('click', function() {
+document.getElementById('start-twitter-scrape-btn').addEventListener('click', function() {
     const scrapingContent = this.innerText;
     if (scrapingContent === "Start") {
-
         this.innerText = 'Stop';
-        chrome.storage.session.set({scrapingState: 'Start'});
+        chrome.storage.session.set({twitterScrapingState: 'Start'});
         chrome.runtime.sendMessage({
-            action: "start",
+            action: "startTwitterScrape",
             url: "https://twitter.com/search?q=jobs%20hiring&src=typed_query" 
         });
     } else {
         this.innerText = 'Start';
-        chrome.storage.session.set({scrapingState: 'Stop'});
+        chrome.storage.session.set({twitterScrapingState: 'Stop'});
         chrome.runtime.sendMessage({
-            action: "stop",
-            url: "" 
+            action: "stopTwitterScrape",
         });
     }
 });

@@ -12,8 +12,8 @@
     },
     "content_scripts": [
         {
-        "matches": ["https://*.twitter.com/*"],
-          "js": ["content/script.js"]
+        "matches": ["https://*/*"],
+        "js": ["content/script.js"]
         }
       ],
     "permissions": [
@@ -21,7 +21,7 @@
         "storage"
     ],
     "host_permissions": [
-      "https://7dc0-2400-1a00-b060-314e-59ca-f99a-58e0-25a4.ngrok-free.app/*",
+      "https://c4fb-2400-1a00-b060-314e-ac83-996e-570f-f847.ngrok-free.app/*",
       "http://localhost:6000/*"
     ]
   }

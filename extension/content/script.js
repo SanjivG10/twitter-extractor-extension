@@ -1,28 +1,29 @@
 let interval  = null;
 let scrollTimes = 0;
-const TOTAL_SCROLL = 2;
+const TOTAL_SCROLL = 20;
+
+const JOBS_KEYWORDS = ["career","job",'we are hiring','join the team','work']
+const PAGES_TO_IGNORE = ["facebook","twitter","instagram","google","youtube","fastkey","gmail","openai","github","zoho"]
+let postInfo = [];
 
 chrome.runtime.onMessage.addListener(
     function(request) {
-      if (request.message === "start") {
+      if (request.message === "startTwitterScrape") {
         interval = setInterval(()=>{
-            console.log("fetching content");
             const posts = getTwitterPostContent();
             scrollTimes+=1;
             window.scrollTo(0, document.body.scrollHeight);
             if (scrollTimes>=TOTAL_SCROLL){
                 clearInterval(interval);
-                console.log("sending",posts);
                 chrome.runtime.sendMessage({
                     action: "data",
                     data: posts
                 });
             }
 
-            // send these posts back to backend to process
         },5000)
       }
-      else if (request.message==="stop"){
+      else if (request.message==="stopTwitterScrape"){
         if (interval)
         clearInterval(interval)
       }
@@ -32,7 +33,6 @@ chrome.runtime.onMessage.addListener(
 const getTwitterPostContent = ()=>{
     const articles = document.querySelectorAll("article");
 
-    let postInfo = [];
     for (const article of articles){
         const tweetTextElement = article.querySelector('[data-testid="tweetText"]')
         const allAnchorText = article.querySelectorAll("a");
@@ -67,5 +67,54 @@ const getTwitterPostContent = ()=>{
         postInfo.push(eachLinkInfo)
     }
     return postInfo;
+}
+
+
+const searchAndGetHiringPage = ()=>{
+  const currentUrl = window.location.href;
+  const url = new URL(currentUrl).hostname.toLowerCase();
+
+  if (PAGES_TO_IGNORE.includes(url)){
+    return;
+  }
+
+  console.log("Searching for job ...");
+
+  const anchors = document.querySelectorAll("a");
+        let jobLink = "";
+        for (const anchor of anchors){
+            const text = anchor.textContent;
+            for (const keyword of JOBS_KEYWORDS){
+                if (text.toLowerCase().includes(keyword.toLowerCase())){
+                    console.log("possible job found")
+                    jobLink = anchor.getAttribute("href");
+                    if (jobLink.startsWith("/")){
+                        jobLink+=window.location.href + jobLink
+                    }
+                }
+            }
+            if (jobLink) break;
+        }
+        console.log(`Job link is ${jobLink}`)
+        if (jobLink){
+            chrome.runtime.sendMessage({
+                action: "possibleJobLink",
+                data: jobLink 
+            });
+        }
+
+        chrome.runtime.sendMessage({
+            action: "stopCurrentPageScrape",
+        });
+}
+
+if (document.readyState !== 'loading') {
+    console.log("LOADED");
+    searchAndGetHiringPage();
+} else {
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("LOADED");
+        searchAndGetHiringPage();
+    });
 }
 
