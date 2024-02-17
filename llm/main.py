@@ -15,7 +15,7 @@ CORS(app)
 def home():
     return "hello world"
 
-@app.route("/save-tweet", methods=['GET', 'POST'])
+@app.route("/save-data", methods=['GET', 'POST'])
 def save_tweet_to_json():
     try:
         if request.method=="POST":
